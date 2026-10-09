@@ -14,3 +14,25 @@ document.querySelectorAll('[data-project]').forEach(button=>button.addEventListe
 document.querySelector('.close').addEventListener('click',()=>dialog.close());
 dialog.addEventListener('close',()=>document.body.classList.remove('modal-open'));
 dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close()}});
+
+const participatedProjects = [{"title": "石头洗地机 DYAD 定格动画", "images": ["assets/dyad-1.jpg", "assets/dyad-2.jpg", "assets/dyad-3.jpg", "assets/dyad-4.jpg", "assets/dyad-5.jpg", "assets/dyad-6.jpg"]}, {"title": "SMARTSONIC+镜面工艺牙刷", "images": ["assets/smartsonic-mirror-1.jpg", "assets/smartsonic-mirror-2.jpg", "assets/smartsonic-mirror-3.jpg", "assets/smartsonic-mirror-4.jpg", "assets/smartsonic-mirror-5.jpg", "assets/smartsonic-mirror-6.jpg"]}, {"title": "SMARTSONIC+儿童牙刷", "images": ["assets/smartsonic-kids-1.jpg", "assets/smartsonic-kids-3.jpg", "assets/smartsonic-kids-4.jpg", "assets/smartsonic-kids-5.jpg", "assets/smartsonic-kids-6.jpg", "assets/smartsonic-kids-2.jpg"]}, {"title": "欧倍青洗发水", "images": ["assets/alpecin-1.jpg", "assets/alpecin-2.jpg", "assets/alpecin-3.jpg", "assets/alpecin-4.jpg"]}];
+document.querySelectorAll('[data-participated]').forEach(button => {
+ button.addEventListener('click', () => {
+  const project = participatedProjects[Number(button.dataset.participated)];
+  document.querySelector('#dialog-title').textContent = project.title;
+  document.querySelector('#dialog-meta').textContent = '参与作品';
+  const gallery = document.querySelector('#gallery');
+  gallery.replaceChildren();
+  project.images.forEach((src, i) => {
+   const image = document.createElement('img');
+   image.src = src;
+   image.alt = `${project.title} · 画面 ${i + 1}`;
+   image.className = 'gallery-image';
+   image.loading = i ? 'lazy' : 'eager';
+   gallery.append(image);
+  });
+  dialog.showModal();
+  dialog.scrollTop = 0;
+  document.body.classList.add('modal-open');
+ });
+});
